@@ -4,6 +4,7 @@ import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader
 import pandas as pd
 import numpy as np
+from sklearn.metrics import accuracy_score, confusion_matrix
 
 # Activities are the class labels
 # It is a 6 class classification
@@ -17,11 +18,12 @@ ACTIVITIES = {
 }
 
 # Utility function to print the confusion matrix
-def confusion_matrix(Y_true, Y_pred):
-    Y_true = pd.Series([ACTIVITIES[y] for y in np.argmax(Y_true, axis=1)])
-    Y_pred = pd.Series([ACTIVITIES[y] for y in np.argmax(Y_pred, axis=1)])
+# def confusion_matrix(Y_true, Y_pred):
+#     print(Y_true.shape)
+#     Y_true = pd.Series([ACTIVITIES[y] for y in np.argmax(np.expand_dims(Y_true, axis=0), axis=1)])
+#     Y_pred = pd.Series([ACTIVITIES[y] for y in np.argmax(Y_pred, axis=1)])
 
-    return pd.crosstab(Y_true, Y_pred, rownames=['True'], colnames=['Pred'])
+#     return pd.crosstab(Y_true, Y_pred, rownames=['True'], colnames=['Pred'])
 
 # Data directory
 DATADIR = 'UCI_HAR_Dataset'
@@ -101,7 +103,7 @@ X_test_tensor = torch.tensor(X_test, dtype=torch.float32)
 Y_test_tensor = torch.tensor(Y_test, dtype=torch.float32)
 
 # Initializing parameters
-epochs = 30
+epochs = 1
 batch_size = 32
 n_hidden = 128
 pv = 0.25
@@ -150,5 +152,13 @@ with torch.no_grad():
 # Confusion Matrix
 Y_test_np = np.argmax(Y_test, axis=1)
 predicted_class_np = predicted_class.numpy()
+# conf_matrix = confusion_matrix(Y_test_np, predicted_class_np)
+# print(conf_matrix)
+
+accuracy = accuracy_score(Y_test_np, predicted_class_np)
+print(f'Accuracy: {accuracy:.4f}')
+
+# Calculate confusion matrix
 conf_matrix = confusion_matrix(Y_test_np, predicted_class_np)
+print('Confusion Matrix:')
 print(conf_matrix)
