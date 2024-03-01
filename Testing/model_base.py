@@ -17,15 +17,6 @@ ACTIVITIES = {
     5: 'LAYING',
 }
 
-# Utility function to print the confusion matrix
-# def confusion_matrix(Y_true, Y_pred):
-#     print(Y_true.shape)
-#     Y_true = pd.Series([ACTIVITIES[y] for y in np.argmax(np.expand_dims(Y_true, axis=0), axis=1)])
-#     Y_pred = pd.Series([ACTIVITIES[y] for y in np.argmax(Y_pred, axis=1)])
-
-#     return pd.crosstab(Y_true, Y_pred, rownames=['True'], colnames=['Pred'])
-
-# Data directory
 DATADIR = 'UCI_HAR_Dataset'
 
 # Raw data signals
@@ -103,7 +94,7 @@ X_test_tensor = torch.tensor(X_test, dtype=torch.float32)
 Y_test_tensor = torch.tensor(Y_test, dtype=torch.float32)
 
 # Initializing parameters
-epochs = 1
+epochs = 35
 batch_size = 32
 n_hidden = 128
 pv = 0.25
